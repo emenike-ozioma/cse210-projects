@@ -32,4 +32,9 @@ public class Bank
     {
         return _customers.Find(c => c.GetCustomerId() == customerId);
     }
+    public int GenerateAccountNumber()
+    {
+        string _stringNumbers = new string(Guid.NewGuid().ToString("N").Substring(0,8).Where(char.IsDigit).ToArray());
+        return int.Parse(_stringNumbers);
+    }
 }

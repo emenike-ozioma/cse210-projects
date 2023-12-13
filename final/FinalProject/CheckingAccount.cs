@@ -3,10 +3,10 @@ public class CheckingAccount : Account
     private double _overdraftLimit; // Represents the maximum negative balance allowed
     
     // Constructor
-    public CheckingAccount() 
-        : base()
+    public CheckingAccount(int accountNumber, string accountHolderName, double overdraftLimit) 
+        : base(accountNumber, accountHolderName)
     {
-        _overdraftLimit = 0;
+        _overdraftLimit = overdraftLimit;
     }
 
     // Overrides the Withdraw method to include overdraft limit checking
@@ -15,6 +15,8 @@ public class CheckingAccount : Account
         if (_accountBalance - amount >= _overdraftLimit)
         {
             _accountBalance -= amount;
+            Transaction transaction = new Transaction(Guid.NewGuid().ToString().Substring(0,12).ToUpper(), Transaction.TransactionType.Withdraw, amount);
+            base.AddTransaction(transaction);
         }
         else
         {
@@ -26,6 +28,8 @@ public class CheckingAccount : Account
     public override void Deposit(double amount)
     {
         _accountBalance += amount;
+        Transaction transaction = new Transaction(Guid.NewGuid().ToString().Substring(0,12).ToUpper(), Transaction.TransactionType.Deposit, amount);
+        base.AddTransaction(transaction);
     }
     
     // Overrides the DisplayAccountInfo method for specific information

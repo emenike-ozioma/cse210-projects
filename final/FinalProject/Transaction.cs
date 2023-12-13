@@ -1,3 +1,5 @@
+using System.Transactions;
+
 public class Transaction
 {
     private string _transactionId;
@@ -5,12 +7,12 @@ public class Transaction
     private TransactionType _transactionType;
     private double _amount;
 
-    public Transaction()
+    public Transaction(string transactionId, TransactionType transactionType, double amount)
     {
-        _transactionId = "";
+        _transactionId = transactionId;
         _transactionDate = DateTime.Now;
-        _transactionType = TransactionType.Unknown;
-        _amount = 0;
+        _transactionType = transactionType;
+        _amount = amount;
     }
 
     public enum TransactionType
@@ -18,5 +20,9 @@ public class Transaction
         Withdraw,
         Deposit,
         Unknown
+    }
+    public override string ToString()
+    {
+        return $"transactionID - {_transactionId} \n{_transactionDate} - {_transactionType}: {_amount:C}";
     }
 }

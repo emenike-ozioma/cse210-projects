@@ -1,24 +1,26 @@
 public abstract class Account
 {
     // Attributes
-    private string _accountNumber;
+    private int _accountNumber;
     private string _accountHolderName;
     protected double _accountBalance;
+    private TransactionHistory _transactionHistory;
 
     // Constructor initializes bank account properties
-    public Account()
+    public Account(int accountNumber, string accountHolderName)
     {
-        _accountNumber = "None";
-        _accountHolderName = "NA";
+        _accountNumber = accountNumber;
+        _accountHolderName = accountHolderName;
         _accountBalance = 0;
+        _transactionHistory = new TransactionHistory();
     }
 
     // Getters and Setters to access private member variables
-    public string GetAccountNumber()
+    public int GetAccountNumber()
     {
         return _accountNumber;
     }
-    public void SetAccountNumber(string accountNumber)
+    public void SetAccountNumber(int accountNumber)
     {
         _accountNumber = accountNumber;
     }
@@ -50,6 +52,12 @@ public abstract class Account
     {
         Console.WriteLine($"Account Number: {_accountNumber}");
         Console.WriteLine($"Account Holder: {_accountHolderName}");
-        Console.WriteLine($"Balance: {_accountBalance}");
+        Console.WriteLine($"Balance: {_accountBalance:C}");
+        Console.WriteLine("\nTransaction History: ");
+        _transactionHistory.DisplayTransactionHistory();
+    }
+    public void AddTransaction(Transaction transaction)
+    {
+        _transactionHistory.AddTransaction(transaction);
     }
 }

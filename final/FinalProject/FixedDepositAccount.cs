@@ -2,14 +2,12 @@ public class FixedDepositAccount : Account
 {
     private double _interestRate;
     private DateTime _maturityDate;
-    private DateTime _startDate;
 
-    public FixedDepositAccount()
-        : base()
+    public FixedDepositAccount(int accountNumber, string accountHolderName, DateTime maturityDate)
+        : base(accountNumber, accountHolderName)
     {
         _interestRate = 0.05;
-        _maturityDate = new DateTime();
-        _startDate = new DateTime();
+        _maturityDate = maturityDate;
     }
     public override void Withdraw(double amount)
     {
@@ -22,6 +20,8 @@ public class FixedDepositAccount : Account
             if (_accountBalance >= amount)
             {
                 _accountBalance -= amount;
+                Transaction transaction = new Transaction(Guid.NewGuid().ToString().Substring(0,12).ToUpper(), Transaction.TransactionType.Withdraw, amount);
+                base.AddTransaction(transaction);
             }
             else
             {
@@ -32,21 +32,21 @@ public class FixedDepositAccount : Account
     }
     public override void Deposit(double amount)
     {
-        if (DateTime.Now < _startDate)
+        if (DateTime.Now > _maturityDate)
         {
             Console.WriteLine("Cannot deposit into a fixed deposit account before start date.");
         }
         else
         {
             _accountBalance += amount + (amount * _interestRate);
-            // AddTransaction(new Transaction(Guid.NewGuid().ToString(), TransactionType.Deposit, amount));
+            Transaction transaction = new Transaction(Guid.NewGuid().ToString().Substring(0,12).ToUpper(), Transaction.TransactionType.Deposit, amount);
+            base.AddTransaction(transaction);
         }
     }
     public override void DisplayAccountInfo()
     {
         base.DisplayAccountInfo();
         Console.WriteLine($"Interest Rate: {_interestRate:P}");
-        Console.WriteLine($"Start Date: {_startDate}");
-        Console.WriteLine($"Maturity Date: {_maturityDate:D}");
+        Console.WriteLine($"Maturity Date: {_maturityDate:d}");
     }
 }

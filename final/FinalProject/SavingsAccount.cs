@@ -1,10 +1,10 @@
 public class SavingsAccount : Account
 {
     private double _interestRate;
-    public SavingsAccount()
-        : base()
+    public SavingsAccount(int accountNumber, string accountHolderName)
+        : base(accountNumber, accountHolderName)
     {
-        _interestRate = 0;
+        _interestRate = 0.02;
     }
 
     // Overrides the Withdraw method to include interest calculation
@@ -13,6 +13,8 @@ public class SavingsAccount : Account
         if (_accountBalance >= amount)
         {
             _accountBalance -= amount;
+            Transaction transaction = new Transaction(Guid.NewGuid().ToString().Substring(0,12).ToUpper(), Transaction.TransactionType.Withdraw, amount);
+            base.AddTransaction(transaction);
         }
         else
         {
@@ -24,6 +26,8 @@ public class SavingsAccount : Account
     public override void Deposit(double amount)
     {
         _accountBalance += amount + (amount * _interestRate);
+        Transaction transaction = new Transaction(Guid.NewGuid().ToString().Substring(0,12).ToUpper(), Transaction.TransactionType.Deposit, amount);
+        base.AddTransaction(transaction);
     }
     
     // Overrides the DisplayAccountInfo method for specific information
